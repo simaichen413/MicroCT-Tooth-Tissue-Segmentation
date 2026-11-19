@@ -1,62 +1,39 @@
 # Micro-CT Tooth Tissue Segmentation
 
-**Automated segmentation of enamel, dentin, and the pulp cavity in ex vivo tooth micro-computed tomography (micro-CT) images using nnU-Net v2.**
+Three-dimensional segmentation of **enamel, dentin, and the pulp cavity** in ex vivo tooth micro-computed tomography (micro-CT) images using **nnU-Net v2**. The model generates tissue-specific masks for extracted teeth, including the pulp chamber and root canals.
 
-This repository provides model documentation, label definitions, internal validation results, and inference scripts for three-dimensional tissue segmentation of extracted teeth.
+## Segmentation examples
 
-## Segmentation targets
+The examples below show micro-CT segmentation overlays and three-dimensional reconstructions of the predicted tissue structures.
 
-| Label ID | Anatomical structure | Model label |
-|---:|---|---|
-| 0 | Background | `background` |
-| 1 | Pulp cavity | `pulp_cavity` |
-| 2 | Enamel | `enamel` |
-| 3 | Dentin | `dentin` |
-
-The network predicts a **multiclass 3D segmentation**: each voxel is assigned a single integer label. It distinguishes the three tooth tissue compartments within an individual micro-CT volume.
+| Micro-CT segmentation: axial, coronal, sagittal, and 3D views | Three-dimensional pulp cavity and root canals |
+|:---:|:---:|
+| ![Micro-CT tooth tissue segmentation in multiplanar views and 3D reconstruction](assets/examples/microct_multiplanar_segmentation.png) | ![Three-dimensional reconstruction of the segmented pulp cavity and root canal system](assets/examples/pulp_cavity_3d_reconstruction.png) |
 
 ## Model overview
 
-| Property | Specification |
+| Property | Value |
 |---|---|
 | Framework | nnU-Net v2 |
 | Dataset | `Dataset413_microctbycsm` (ID `413`) |
 | Configuration | `3d_fullres` |
 | Trainer | `nnUNetTrainer` |
 | Available fold | `0` (`checkpoint_final.pth`) |
-| Image format | Single-channel `.nii.gz` (CT) |
-| Target preprocessing spacing | approximately **0.0418 mm** in each dimension (from model plans) |
-| Dataset entries recorded in `dataset.json` | 100 |
-| Fold 0 internal validation cases | 20 |
+| Input | Single-channel micro-CT, NIfTI `.nii.gz` |
+| Preprocessing target spacing | Approximately 0.0418 mm isotropic |
+| Segmentation classes | Pulp cavity, enamel, dentin |
+| Dataset entries recorded | 100 |
+| Fold 0 internal validation | 20 cases |
 
-## Internal validation
-
-The following scores were calculated from the model's exported Fold 0 validation summary:
-
-| Structure | Mean Dice | Mean IoU |
-|---|---:|---:|
-| Pulp cavity | 0.9528 | 0.9133 |
-| Enamel | 0.9693 | 0.9429 |
-| Dentin | 0.9827 | 0.9663 |
-| **Foreground-class mean** | **0.9683** | **0.9408** |
-
-These are internal validation results for the supplied Fold 0 model. See [validation details](docs/VALIDATION.md) and [full metrics](metadata/validation_by_label.csv).
-
-## Training history
-
-The following chart is extracted from the exported nnU-Net training record; it shows training/validation loss, pseudo Dice, epoch duration, and learning-rate progression.
-
-![nnU-Net training-loss and pseudo-Dice curves](assets/training/training_curve.png)
-
-[View the full training history](assets/training/progress.png)
+The model predicts integer labels for each voxel: `0` = background, `1` = pulp cavity, `2` = enamel, and `3` = dentin. See [label definitions](docs/LABELS.md) for the full mapping.
 
 ## Model availability
 
 **The trained model weights are available upon reasonable request for academic and research purposes.**
 
-For access to the pretrained nnU-Net model, please email **[simaichen413@gmail.com](mailto:simaichen413@gmail.com)** with a brief description of your research purpose.
+To request the pretrained nnU-Net model, please email **[simaichen413@gmail.com](mailto:simaichen413@gmail.com)** with a brief description of your research purpose.
 
-The model is supplied as a standard nnU-Net v2-compatible ZIP file (`Dataset413_model.zip`). Once received, install it directly:
+The model is supplied as an nnU-Net v2-compatible ZIP archive (`Dataset413_model.zip`). Once received, it can be installed directly using:
 
 ```bash
 nnUNetv2_install_pretrained_model_from_zip /path/to/Dataset413_model.zip
@@ -64,20 +41,20 @@ nnUNetv2_install_pretrained_model_from_zip /path/to/Dataset413_model.zip
 
 ## Installation and inference
 
-Install a compatible nnU-Net v2 / PyTorch environment:
+Install nnU-Net v2 in a compatible Python / PyTorch environment:
 
 ```bash
 pip install nnunetv2
 ```
 
-Configure `nnUNet_results` (macOS/Linux example):
+Configure a writable nnU-Net results directory (macOS/Linux example):
 
 ```bash
 export nnUNet_results="$HOME/nnUNet_results"
 mkdir -p "$nnUNet_results"
 ```
 
-After importing the pretrained ZIP, place single-channel micro-CT NIfTI volumes in an input directory:
+After importing the model archive, prepare single-channel micro-CT NIfTI images with the nnU-Net naming convention:
 
 ```text
 imagesTs/
@@ -85,7 +62,7 @@ imagesTs/
 └── tooth002_0000.nii.gz
 ```
 
-Run inference using the provided fold:
+Run segmentation with Fold 0:
 
 ```bash
 nnUNetv2_predict \
@@ -97,25 +74,36 @@ nnUNetv2_predict \
   -tr nnUNetTrainer
 ```
 
-Outputs are multiclass NIfTI masks (`tooth001.nii.gz`, etc.) with the labels listed above. For a detailed guide and Windows commands, see [Installation](docs/INSTALLATION.md) or [中文使用说明](docs/使用说明_中文.md).
+Predictions are saved as multiclass NIfTI masks (`tooth001.nii.gz`, etc.). See [Installation](docs/INSTALLATION.md) or [中文使用说明](docs/使用说明_中文.md) for full instructions and Windows commands.
 
-## Repository layout
+## Internal validation
+
+Internal validation was performed on 20 ex vivo tooth micro-CT scans (Fold 0). The exported nnU-Net validation summary reports:
+
+| Structure | Mean Dice | Mean IoU |
+|---|---:|---:|
+| Pulp cavity | 0.9528 | 0.9133 |
+| Enamel | 0.9693 | 0.9429 |
+| Dentin | 0.9827 | 0.9663 |
+| **Foreground-class mean** | **0.9683** | **0.9408** |
+
+These are internal validation results for Fold 0. The full per-class metrics are available in [Validation](docs/VALIDATION.md) and [`metadata/validation_by_label.csv`](metadata/validation_by_label.csv).
+
+## Repository structure
 
 ```text
 MicroCT-Tooth-Tissue-Segmentation/
 ├── README.md
 ├── .gitignore
 ├── assets/
-│   ├── training/
-│   │   ├── training_curve.png
-│   │   └── progress.png
 │   └── examples/
-│       └── README.md
+│       ├── microct_multiplanar_segmentation.png
+│       └── pulp_cavity_3d_reconstruction.png
 ├── docs/
 │   ├── INSTALLATION.md
+│   ├── LABELS.md
 │   ├── MODEL.md
 │   ├── VALIDATION.md
-│   ├── LABELS.md
 │   └── 使用说明_中文.md
 ├── metadata/
 │   ├── dataset.json

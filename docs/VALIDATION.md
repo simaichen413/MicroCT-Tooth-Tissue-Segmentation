@@ -11,4 +11,3 @@ The exported nnU-Net v2 model includes `fold_0/validation/summary.json` with eva
 
 The foreground mean is the unweighted mean of the three per-class scores in the nnU-Net summary. These scores describe internal Fold 0 validation, not external test performance. The report does not establish reproducibility on other micro-CT scanners or voxel settings.
 
-The training curve included in the repository is the nnU-Net export's `progress.png`. The **pseudo Dice** shown there is a training-time monitoring signal; the tabulated values above are from the exported per-case validation summary.

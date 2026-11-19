@@ -1,0 +1,4 @@
+label_id,structure,mean_dice,mean_iou,validation_cases
+1,Pulp cavity,0.952791,0.913324,20
+2,Enamel,0.969263,0.942905,20
+3,Dentin,0.982726,0.966307,20

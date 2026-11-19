@@ -1,0 +1,13 @@
+{
+  "channel_names": {
+    "0": "CT"
+  },
+  "labels": {
+    "background": 0,
+    "pulp_cavity": 1,
+    "enamel": 2,
+    "dentin": 3
+  },
+  "numTraining": 100,
+  "file_ending": ".nii.gz"
+}

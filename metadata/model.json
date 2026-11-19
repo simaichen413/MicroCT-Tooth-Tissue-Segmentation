@@ -1,0 +1,38 @@
+{
+  "model_name": "Ex Vivo Tooth Tissue Segmentation from Micro-CT",
+  "model_framework": "nnU-Net v2",
+  "dataset_name": "Dataset413_microctbycsm",
+  "dataset_id": 413,
+  "dataset_entries_reported": 100,
+  "validation_cases_fold_0": 20,
+  "configuration": "3d_fullres",
+  "plans_identifier": "nnUNetPlans",
+  "trainer": "nnUNetTrainer",
+  "folds": [
+    0
+  ],
+  "input_modality": "CT",
+  "input_file_ending": ".nii.gz",
+  "target_spacing_mm": [
+    0.04186182655394077,
+    0.04181113839149475,
+    0.0418536514043808
+  ],
+  "patch_size_voxels": [
+    160,
+    112,
+    128
+  ],
+  "segmentation_labels": {
+    "background": 0,
+    "pulp_cavity": 1,
+    "enamel": 2,
+    "dentin": 3
+  },
+  "foreground_mean_dice": 0.9682602186396725,
+  "foreground_mean_iou": 0.9408451594125289,
+  "model_availability": "Available upon reasonable request for academic and research purposes",
+  "contact_email": "simaichen413@gmail.com",
+  "model_archive_name": "Dataset413_model.zip",
+  "original_export_sha256": "b095bece49e9ffb36414b1949d320275cc18ef5e1b1cd8f9a614cda690d1fc3d"
+}

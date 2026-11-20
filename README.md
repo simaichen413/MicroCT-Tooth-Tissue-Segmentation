@@ -29,6 +29,8 @@ The model predicts integer labels for each voxel. See [label definitions](docs/L
 
 ## Model availability
 
+**As this model was developed using micro-CT images of human tooth specimens, the pretrained model weights are not publicly distributed to support patient privacy protection and responsible research data sharing.**
+
 **The trained model weights are available upon reasonable request for academic and research purposes.**
 
 To request the pretrained nnU-Net model, please email **[simaichen413@gmail.com](mailto:simaichen413@gmail.com)** with a brief description of your research purpose.

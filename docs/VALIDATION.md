@@ -9,5 +9,4 @@ The exported nnU-Net v2 model includes `fold_0/validation/summary.json` with eva
 | 3 | Dentin | 0.982726 | 0.966307 |
 | — | Foreground mean (three classes) | 0.968260 | 0.940845 |
 
-The foreground mean is the unweighted mean of the three per-class scores in the nnU-Net summary. These scores describe internal Fold 0 validation, not external test performance. The report does not establish reproducibility on other micro-CT scanners or voxel settings.
-
+The foreground mean is the unweighted mean of the three per-class scores in the nnU-Net summary. These scores describe internal Fold 0 validation, not external test performance.

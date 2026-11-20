@@ -25,7 +25,7 @@ The examples below show micro-CT segmentation overlays and three-dimensional rec
 | Dataset entries recorded | 100 |
 | Fold 0 internal validation | 20 cases |
 
-The model predicts integer labels for each voxel: `0` = background, `1` = pulp cavity, `2` = enamel, and `3` = dentin. See [label definitions](docs/LABELS.md) for the full mapping.
+The model predicts integer labels for each voxel. See [label definitions](docs/LABELS.md) for the full mapping.
 
 ## Model availability
 
